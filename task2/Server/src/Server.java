@@ -4,10 +4,32 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 class Server {
-    public static void main(String[] args)
-    {
+    public static class Extractor {
+        public static double[] exctractDoublet(String str) {
+
+            var iterStr = str.split(" ");
+            var floats = new double[iterStr.length];
+            for (var i = 0; i < iterStr.length; i++) {
+                floats[i] = Double.parseDouble(iterStr[i]);
+            }
+            return floats;
+        }
+
+        public static int[] exctractInt(String str) {
+
+            var iterStr = str.split(" ");
+            var integers = new int[iterStr.length];
+            for (var i = 0; i < iterStr.length; i++) {
+                integers[i] = Integer.parseInt(iterStr[i]);
+            }
+            return integers;
+        }
+    }
+
+    public static void main(String[] args) {
         ServerSocket server = null;
 
         try {
@@ -26,16 +48,13 @@ class Server {
 
                 new Thread(clientSock).start();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             if (server != null) {
                 try {
                     server.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -46,13 +65,11 @@ class Server {
     private static class ClientHandler implements Runnable {
         private final Socket clientSocket;
 
-        public ClientHandler(Socket socket)
-        {
+        public ClientHandler(Socket socket) {
             this.clientSocket = socket;
         }
 
-        public void run()
-        {
+        public void run() {
             PrintWriter out = null;
             BufferedReader in = null;
             try {
@@ -68,13 +85,40 @@ class Server {
                     System.out.printf(
                             " Sent from the client: %s\n",
                             line);
+                    double[] floats;
+                    int[] integers;
+                    switch (line) {
+                        case "Task1":
+                            out.println("Enter hypotenuse and side");
+                            line = in.readLine();
+                            floats = Extractor.exctractDoublet(line);
+                            out.println(triangle(floats[0], floats[1]));
+                        case "Task2":
+                            out.println("Enter your 2 numbers");
+                            line = in.readLine();
+                            floats = Extractor.exctractDoublet(line);
+                            out.println(tripleFunc(floats[0], floats[1]));
+                        case "Task3":
+                            out.println("Enter your number");
+                            line = in.readLine();
+                            integers = Extractor.exctractInt(line);
+                            out.println(primeCount(integers[0]));
+                        case "Task4":
+                            out.println(oricatelniyChlen());
+                        case "Task5":
+                            out.println("Enter hypotenuse and side");
+                            int i;
+                            while ((i = Integer.parseInt(in.readLine()))>=0)
+                                out.println(i);
+                        default:
+                            out.println("enter TaskN, where N is a task number");
+                    }
+
                     out.println(line);
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-            }
-            finally {
+            } finally {
                 try {
                     if (out != null) {
                         out.close();
@@ -83,11 +127,43 @@ class Server {
                         in.close();
                         clientSocket.close();
                     }
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    public static String triangle(double sideA, double sideB) {
+        return "" + Math.sqrt(sideA * sideA + sideB * sideB);
+    }
+
+    interface nestedFunc {
+        double g(double a, double b);
+    }
+
+    public static String tripleFunc(double s, double t) {
+        nestedFunc result = (a, b) -> (2 * a + b * b) / (a * b * 2 + b * 5);
+
+        return "" + (result.g(12, s) + result.g(t, s) - result.g(2 * s - 1, s * t));
+    }
+
+    public static boolean isPrime(int n) {
+        return !new String(new char[n]).matches(".?|(..+?)\\1+");
+    }
+
+    public static String primeCount(int n) {
+        int answer = 0;
+        for (int i = 0; i < n; i++) {
+            if (isPrime(i)) answer++;
+        }
+        return "" + answer;
+    }
+
+    public static String oricatelniyChlen() {
+        int n = 1;
+        double answer;
+        while ((answer = Math.cos(1 / Math.tan(n))) > 0) n++;
+        return "" + answer;
     }
 }
