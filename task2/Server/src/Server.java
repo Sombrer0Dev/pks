@@ -92,31 +92,29 @@ class Server {
                             line = in.readLine();
                             floats = Extractor.exctractDoublet(line);
                             out.println(triangle(floats[0], floats[1]));
-                        case "Task2":
+                            break;
+                        case "Task2", "Task4":
                             out.println("Enter your 2 numbers");
                             line = in.readLine();
                             floats = Extractor.exctractDoublet(line);
                             out.println(tripleFunc1(floats[0], floats[1]));
+                            break;
                         case "Task3":
                             out.println("Enter your number");
                             line = in.readLine();
                             integers = Extractor.exctractInt(line);
                             out.println(primeCount(integers[0]));
-                        case "Task4":
-                            out.println("Enter your 2 numbers");
-                            line = in.readLine();
-                            floats = Extractor.exctractDoublet(line);
-                            out.println(tripleFunc1(floats[0], floats[1]));
+                            break;
                         case "Task5":
                             out.println("Enter hypotenuse and side");
                             int i;
                             while ((i = Integer.parseInt(in.readLine())) >= 0)
                                 out.println(i);
+                            break;
                         default:
                             out.println("enter TaskN, where N is a task number");
+                            break;
                     }
-
-                    out.println(line);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
