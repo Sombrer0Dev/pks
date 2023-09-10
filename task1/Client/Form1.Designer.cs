@@ -129,6 +129,7 @@ partial class Form1
         _answerButton.Click -= _currentEventHandler;
         _answerButton.Click += _task5Event;
         _currentEventHandler = _task5Event;
+        
     }
 
     private void CreateIO()
@@ -171,8 +172,7 @@ partial class Form1
         
         CreateDock();
 
-        CreateControl<Button>(_answerButton, 200, 100, "Click Me!");
-        _answerButton.Click += _task1Event;
+        CreateControl(_answerButton, 200, 100, "Click Me!",_task1Event);
         _currentEventHandler = _task1Event;
     }
 }

@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 class Server {
     public static class Extractor {
@@ -39,7 +38,7 @@ class Server {
             while (true) {
                 Socket client = server.accept();
 
-                System.out.println("New client connected"
+                System.out.println("New client connected "
                         + client.getInetAddress()
                         .getHostAddress());
 
@@ -97,18 +96,21 @@ class Server {
                             out.println("Enter your 2 numbers");
                             line = in.readLine();
                             floats = Extractor.exctractDoublet(line);
-                            out.println(tripleFunc(floats[0], floats[1]));
+                            out.println(tripleFunc1(floats[0], floats[1]));
                         case "Task3":
                             out.println("Enter your number");
                             line = in.readLine();
                             integers = Extractor.exctractInt(line);
                             out.println(primeCount(integers[0]));
                         case "Task4":
-                            out.println(oricatelniyChlen());
+                            out.println("Enter your 2 numbers");
+                            line = in.readLine();
+                            floats = Extractor.exctractDoublet(line);
+                            out.println(tripleFunc1(floats[0], floats[1]));
                         case "Task5":
                             out.println("Enter hypotenuse and side");
                             int i;
-                            while ((i = Integer.parseInt(in.readLine()))>=0)
+                            while ((i = Integer.parseInt(in.readLine())) >= 0)
                                 out.println(i);
                         default:
                             out.println("enter TaskN, where N is a task number");
@@ -138,15 +140,26 @@ class Server {
         return "" + Math.sqrt(sideA * sideA + sideB * sideB);
     }
 
-    interface nestedFunc {
+    interface nestedFunc1 {
         double g(double a, double b);
     }
 
-    public static String tripleFunc(double s, double t) {
-        nestedFunc result = (a, b) -> (2 * a + b * b) / (a * b * 2 + b * 5);
+    interface nestedFunc2 {
+        double f(double a, double b, double c);
+    }
+
+    public static String tripleFunc1(double s, double t) {
+        nestedFunc1 result = (a, b) -> (2 * a + b * b) / (a * b * 2 + b * 5);
 
         return "" + (result.g(12, s) + result.g(t, s) - result.g(2 * s - 1, s * t));
     }
+
+    public static String tripleFunc2(double s, double t) {
+        nestedFunc2 result = (a, b, c) -> ((2 * a - b - Math.sin(c)) / (5 + c));
+
+        return "" + (result.f(t, 2 * s, 1.17) + result.f(2.2, t, s - t));
+    }
+
 
     public static boolean isPrime(int n) {
         return !new String(new char[n]).matches(".?|(..+?)\\1+");
